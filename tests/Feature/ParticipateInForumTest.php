@@ -29,16 +29,15 @@ class ParticipateInForumTest extends TestCase
     /** @test */
     function an_authenticated_user_may_reply_in_forum_threads()
     {
-        $user = factory(User::class)->create();
+        $this->signIn();
         $thread = factory(Thread::class)->create();
         $this->assertEquals(0, $thread->replies()->count());
 
 
-        $response = $this->actingAs($user)->post("{$thread->path()}/replies", [
+        $this->post("{$thread->path()}/replies", [
             'body' => 'I have something to say about this thread.'
         ]);
 
-        $response->assertOk();
         $this->assertEquals(1, $thread->fresh()->replies()->count());
         $this->get($thread->path())->assertSee('I have something to say about this thread.');
     }
