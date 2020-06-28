@@ -19,6 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/threads', [ThreadController::class, 'index'])->name('thread.index');
+Route::post('/threads', [ThreadController::class, 'store'])->name('thread.store')->middleware('auth');
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('thread.show');
 
 Route::post('/threads/{thread}/replies', [ReplyController::class, 'store'])->middleware('auth');
