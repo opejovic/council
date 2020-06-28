@@ -13,6 +13,12 @@ class CreateThreadsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    function guests_cannot_see_the_form_to_create_threads()
+    {
+        $this->get('/threads/create')->assertRedirect('/login');
+    }
+
+    /** @test */
     function guests_cannot_create_threads()
     {
         $this->post('/threads', [])->assertRedirect('/login');
