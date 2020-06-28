@@ -6,13 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    public function path()
+    protected $guarded = [];
+
+    public function creator()
     {
-        return "/threads/{$this->id}";
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function replies()
     {
         return $this->hasMany(Reply::class);
+    }
+
+    public function path()
+    {
+        return "/threads/{$this->id}";
+    }
+
+    public function addReply($attributes)
+    {
+        return $this->replies()->create($attributes);
+
+    }
+
+    public function getCreatorNameAttribute()
+    {
+        return $this->creator->name;
     }
 }

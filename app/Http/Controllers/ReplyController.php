@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reply;
+use App\Models\Thread;
 use Illuminate\Http\Request;
 
 class ReplyController extends Controller
@@ -30,12 +31,16 @@ class ReplyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Controllers\Thread $thread
+     * @param  \Illuminate\Http\Request     $request
+     * @return void
      */
-    public function store(Request $request)
+    public function store(Thread $thread, Request $request)
     {
-        //
+        $thread->addReply([
+            'body' => request('body'),
+            'user_id' => auth()->id()
+        ]);
     }
 
     /**

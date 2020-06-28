@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ThreadController;
 
 /*
@@ -19,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/threads', [ThreadController::class, 'index'])->name('thread.index');
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('thread.show');
+
+Route::post('/threads/{thread}/replies', [ReplyController::class, 'store'])->middleware('auth');
