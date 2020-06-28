@@ -38,6 +38,12 @@ class ThreadController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'title' => ['required'],
+            'body' => ['required'],
+            'category_id' => ['required', 'exists:categories,id'],
+        ]);
+
         $thread = Thread::create([
             'category_id' => $request['category_id'],
             'user_id' => auth()->id(),

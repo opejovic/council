@@ -40,4 +40,17 @@ class ParticipateInForumTest extends TestCase
         $this->assertEquals(1, $thread->fresh()->replies()->count());
         $this->get($thread->path())->assertSee('I have something to say about this thread.');
     }
+
+    /** @test */
+    public function a_reply_requires_a_body()
+    {
+        $this->signIn();
+        $thread = factory(Thread::class)->create();
+
+        $response = $this->post("{$thread->path()}/replies", [
+            'body' => null,
+        ]);
+
+        $response->assertSessionHasErrors('body');
+    }
 }

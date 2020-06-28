@@ -38,6 +38,10 @@ class ReplyController extends Controller
      */
     public function store(Category $category, Thread $thread)
     {
+        request()->validate([
+            'body' => ['required']
+        ]);
+
         $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
