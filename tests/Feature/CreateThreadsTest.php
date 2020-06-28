@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Thread;
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -27,10 +28,12 @@ class CreateThreadsTest extends TestCase
     /** @test */
     function authenticated_users_can_create_threads()
     {
+        $this->withoutExceptionHandling();
         $this->signIn();
         $this->assertCount(0, Thread::all());
 
         $this->post('/threads', [
+            'category_id' => factory(Category::class)->create()->id,
             'title' => 'My first thread',
             'body' => 'My thoughts on some subject.'
         ]);

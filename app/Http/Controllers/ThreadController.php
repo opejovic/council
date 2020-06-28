@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Thread;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ThreadController extends Controller
@@ -38,6 +39,7 @@ class ThreadController extends Controller
     public function store(Request $request)
     {
         $thread = Thread::create([
+            'category_id' => $request['category_id'],
             'user_id' => auth()->id(),
             'title' => $request['title'],
             'body' => $request['body'],
@@ -49,10 +51,11 @@ class ThreadController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Thread  $thread
+     * @param  \App\Models\Category $category
+     * @param  \App\Models\Thread   $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $thread)
+    public function show(Category $category, Thread $thread)
     {
         return view('thread.show', ['thread' => $thread]);
     }

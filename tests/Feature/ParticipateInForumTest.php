@@ -33,7 +33,6 @@ class ParticipateInForumTest extends TestCase
         $thread = factory(Thread::class)->create();
         $this->assertEquals(0, $thread->replies()->count());
 
-
         $this->post("{$thread->path()}/replies", [
             'body' => 'I have something to say about this thread.'
         ]);

@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ThreadTest extends TestCase
@@ -51,6 +52,18 @@ class ThreadTest extends TestCase
     function thread_knows_formatted_creator_name_attribute()
     {
         $this->assertEquals($this->thread->creator->name, $this->thread->creatorName);
+    }
+
+    /** @test */
+    function thread_belongs_to_category()
+    {
+        $this->assertInstanceOf(Category::class, $this->thread->category);
+    }
+
+    /** @test */
+    function it_knows_its_path_string()
+    {
+        $this->assertEquals("/threads/{$this->thread->category->slug}/{$this->thread->id}", $this->thread->path());
     }
 
 }
