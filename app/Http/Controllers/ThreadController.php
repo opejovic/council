@@ -13,9 +13,15 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Category $category = null)
     {
-        $threads = Thread::latest()->get();
+        $threads = Thread::latest();
+
+        if (! is_null($category)) {
+            $threads = Thread::where('category_id', $category->id)->latest();
+        }
+
+        $threads = $threads->get();
 
         return view('thread.index', ['threads' => $threads]);
     }

@@ -7,6 +7,7 @@ use App\Models\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Category;
 
 class ReadThreadsTest extends TestCase
 {
@@ -42,14 +43,31 @@ class ReadThreadsTest extends TestCase
     /** @test */
     function a_user_can_read_all_replies_associated_with_the_thread()
     {
-        // And that thread has replies
         $reply = factory(Reply::class)->create(['thread_id' => $this->thread->id]);
 
-        // When the user visits that thread
         $response = $this->get($this->thread->path());
 
-        // Then he should be able to see all replies associated with it
         $response->assertOk();
         $response->assertSee($reply->body);
+    }
+
+    /** @test */
+    public function a_user_can_filter_threads_according_to_a_category()
+    {
+        $this->withoutExceptionHandling();
+        /* Arrange  2 threads, associated with different categories */
+        $category = factory(Category::class)->create();
+        $threadInCategory = factory(Thread::class)->create([
+            'category_id' => $category->id
+        ]);
+    
+        $threadInOtherCategory = factory(Thread::class)->create();
+    
+        /* Act user filters by one category */
+        $response = $this->get("/threads/{$category->slug}");
+    
+        /* Assert only a thread associated with filtered category is shown */
+        $response->assertSee($threadInCategory->title);
+        $response->assertDontSee($threadInOtherCategory->title);
     }
 }
