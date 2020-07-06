@@ -11,14 +11,48 @@
                         <form method="POST" action="/threads">
                             @csrf
 
+
+                            
+                            <div class="form-group">
+                                <label for="title">Category</label>
+                                <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
+                                    <option value="">Choose One...</option>
+
+                                    @foreach (\App\Models\Category::all() as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : ''}}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('category_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+
                             <div class="form-group">
                                 <label for="title">Thread title</label>
-                                <input class="form-control" type="text" name="title" id="title">
+                                <input class="form-control  @error('title') is-invalid @enderror" type="text" name="title" id="title" value="{{ old('title') }}">
+
+                                @error('title')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
                                 <label for="title">Thread body</label>
-                                <textarea class="form-control" name="body" id="body" rows="8"></textarea>
+                                <textarea class="form-control @error('body') is-invalid @enderror" name="body" id="body" rows="8">{{ old('body') }}</textarea>
+
+                                @error('body')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
 
                             <div class="form-group">
