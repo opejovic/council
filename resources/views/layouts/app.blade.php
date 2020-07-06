@@ -37,7 +37,7 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Categories</a>
                             <div class="dropdown-menu overflow-auto" style="height: 20rem;">
-                              @foreach (App\Models\Category::all() as $category)
+                              @foreach ($categories as $category)
                                 <a class="dropdown-item" href="/threads/{{ $category->slug }}">{{ $category->name }}</a>
                               @endforeach
                             </div>

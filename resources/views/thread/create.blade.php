@@ -10,15 +10,13 @@
                     <div class="card-body">
                         <form method="POST" action="/threads">
                             @csrf
-
-
                             
                             <div class="form-group">
                                 <label for="title">Category</label>
                                 <select class="form-control @error('category_id') is-invalid @enderror" name="category_id">
                                     <option value="">Choose One...</option>
 
-                                    @foreach (\App\Models\Category::all() as $category)
+                                    @foreach ($categories as $category)
                                         <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : ''}}>
                                             {{ $category->name }}
                                         </option>
