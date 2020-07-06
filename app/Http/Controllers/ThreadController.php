@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Thread;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class ThreadController extends Controller
 {
@@ -18,10 +19,15 @@ class ThreadController extends Controller
         $threads = Thread::latest();
 
         if (! is_null($category)) {
-            $threads = Thread::where('category_id', $category->id)->latest();
+            $threads = Thread::where('category_id', $category->id);
+        } 
+
+        if ($username = request('by')) {
+            $user = User::where('name', $username)->firstOrFail();
+            $threads = $threads->where('user_id', $user->id);
         }
 
-        $threads = $threads->get();
+        $threads = $threads->latest()->get();
 
         return view('thread.index', ['threads' => $threads]);
     }

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Category;
+use App\Models\User;
 
 class ReadThreadsTest extends TestCase
 {
@@ -54,8 +55,6 @@ class ReadThreadsTest extends TestCase
     /** @test */
     public function a_user_can_filter_threads_according_to_a_category()
     {
-        $this->withoutExceptionHandling();
-        /* Arrange  2 threads, associated with different categories */
         $category = factory(Category::class)->create();
         $threadInCategory = factory(Thread::class)->create([
             'category_id' => $category->id
@@ -63,11 +62,22 @@ class ReadThreadsTest extends TestCase
     
         $threadInOtherCategory = factory(Thread::class)->create();
     
-        /* Act user filters by one category */
         $response = $this->get("/threads/{$category->slug}");
     
-        /* Assert only a thread associated with filtered category is shown */
         $response->assertSee($threadInCategory->title);
         $response->assertDontSee($threadInOtherCategory->title);
+    }
+
+    /** @test */
+    public function user_can_filter_threads_by_any_username()
+    {
+        $john = factory(User::class)->create(['name' => 'John']);
+        $threadByJohn = factory(Thread::class)->create(['user_id' => $john->id]);
+        $threadNotByJohn = factory(Thread::class)->create();
+    
+        $response = $this->get('/threads?by=John');
+
+        $response->assertSee($threadByJohn->title);
+        $response->assertDontSee($threadNotByJohn->title);
     }
 }
