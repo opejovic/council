@@ -6,6 +6,7 @@ use App\Models\Thread;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Filters\ThreadFilters;
 
 class ThreadController extends Controller
 {
@@ -14,18 +15,13 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Category $category = null)
+    public function index(Category $category, ThreadFilters $filters)
     {
-        $threads = Thread::latest();
-
-        if (! is_null($category)) {
+        $threads = Thread::filter($filters);
+        
+        if ($category->exists) {
             $threads = Thread::where('category_id', $category->id);
         } 
-
-        if ($username = request('by')) {
-            $user = User::where('name', $username)->firstOrFail();
-            $threads = $threads->where('user_id', $user->id);
-        }
 
         $threads = $threads->latest()->get();
 

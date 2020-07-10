@@ -38,4 +38,9 @@ class Thread extends Model
     {
         return $this->creator->name;
     }
+
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
 }

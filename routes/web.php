@@ -17,7 +17,6 @@ use App\Http\Controllers\ThreadController;
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/threads', [ThreadController::class, 'index'])->name('thread.index');
 Route::get('/threads/create', [ThreadController::class, 'create'])->name('thread.create')->middleware('auth');
 Route::post('/threads', [ThreadController::class, 'store'])->name('thread.store')->middleware('auth');
