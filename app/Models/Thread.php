@@ -8,6 +8,15 @@ class Thread extends Model
 {
     protected $guarded = [];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function ($builder) {
+            $builder->withCount('replies');
+        });
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');

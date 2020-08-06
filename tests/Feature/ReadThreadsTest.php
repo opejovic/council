@@ -24,7 +24,7 @@ class ReadThreadsTest extends TestCase
     /** @test */
     function a_user_can_view_all_threads()
     {
-        $response = $this->get('/threads');
+        $response = $this->get('/');
 
         $response->assertOk();
         $response->assertSee($this->thread->title);
@@ -79,5 +79,24 @@ class ReadThreadsTest extends TestCase
 
         $response->assertSee($threadByJohn->title);
         $response->assertDontSee($threadNotByJohn->title);
+    }
+
+    /** @test */
+    public function a_user_can_filter_threads_by_popularity()
+    {
+        $this->withoutExceptionHandling();
+        /* Arrange - we have 2 threads, 1 thread has 2 replies, and the other has 0 replies  */
+        $threadWithNoReplies = factory(Thread::class)->create();
+        $threadWithTwoReplies = factory(Thread::class)->create();
+
+        factory(Reply::class)->create(['thread_id' => $threadWithTwoReplies]);
+
+    
+        /* Act - user filters threads by popularity eg. /threads?popularity=1 or ?popular=1*/
+        $response = $this->get('/threads?popularity=1');
+    
+        /* Assert - the threads are displayed in correct manner - first is displayed the thread with most replies */
+        $response->assertOk();
+        $response->assertSeeInOrder([$threadWithTwoReplies->title, $threadWithNoReplies->title]);
     }
 }
