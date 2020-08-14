@@ -28,4 +28,4 @@ Route::get('/threads/{category}/{thread}', [ThreadController::class, 'show'])->n
 
 Route::post('/threads/{category}/{thread}/replies', [ReplyController::class, 'store'])->middleware('auth');
 
-Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->middleware('auth');
+Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->middleware('auth')->name('reply.favorite');
