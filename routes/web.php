@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,5 @@ Route::get('/threads/{category}', [ThreadController::class, 'index']);
 Route::get('/threads/{category}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
 
 Route::post('/threads/{category}/{thread}/replies', [ReplyController::class, 'store'])->middleware('auth');
+
+Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->middleware('auth');
