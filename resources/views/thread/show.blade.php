@@ -12,8 +12,10 @@
                     </div>
                 </div>
 
-                @forelse($thread->replies as $reply)
+                @forelse($replies as $reply)
                     @include('thread.reply')
+
+                    {{ $replies->links() }}
                 @empty
                     No replies for this thread yet.
                 @endforelse

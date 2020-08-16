@@ -69,9 +69,12 @@ class ThreadController extends Controller
      * @param  \App\Models\Thread   $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category, Thread $thread)
+    public function show($categorySlug, Thread $thread)
     {
-        return view('thread.show', ['thread' => $thread]);
+        return view('thread.show', [
+            'thread' => $thread,
+            'replies' => $thread->replies()->paginate(20)
+        ]);
     }
 
     /**

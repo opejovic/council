@@ -3,13 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Favoritable;
 
 class Reply extends Model
 {
+    use Favoritable;
+
     /**
      * Attributes that are not mass assignable.
      */
     protected $guarded = [];
+
+    protected $with = ['owner', 'favorites'];
 
     public function owner()
     {
@@ -21,18 +26,4 @@ class Reply extends Model
         return $this->belongsTo(Thread::class, 'thread_id');
     }
 
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class, 'favorited');
-    }
-
-    public function favorite()
-    {
-        $attributes = ['user_id' => auth()->id()];
-        
-        if (! $this->favorites()->where($attributes)->exists()) {
-            return $this->favorites()->create($attributes);
-        }
-
-    }
 }

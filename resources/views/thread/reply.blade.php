@@ -7,8 +7,8 @@
         @auth
             <form action="{{ route('reply.favorite', [$reply]) }}" method="post">
                 @csrf
-                <button class="btn btn-primary" type="submit">
-                    {{ $reply->favorites()->count() }} {{ Str::plural('Favorite', $reply->favorites()->count()) }}
+                <button class="btn btn-primary" type="submit" {{ $reply->isFavorited() ? 'disabled' : '' }}>
+                    {{ $reply->favorites_count }} {{ Str::plural('Favorite', $reply->favorites_count) }}
                 </button>
             </form>
         @endauth
