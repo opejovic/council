@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,5 @@ Route::get('/threads/{category}/{thread}', [ThreadController::class, 'show'])->n
 Route::post('/threads/{category}/{thread}/replies', [ReplyController::class, 'store'])->middleware('auth');
 
 Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->middleware('auth')->name('reply.favorite');
+
+Route::get('/profiles/{user}', [ProfileController::class, 'show'])->name('profile');
