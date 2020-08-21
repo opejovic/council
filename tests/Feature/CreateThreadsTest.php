@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Reply;
 use App\Models\Category;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -46,17 +47,32 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
-    function authenticated_users_can_delete_their_threads()
+    function unauthorized_users_can_not_delete_threads()
+    {
+        $thread = factory(Thread::class)->create();
+
+        $this->delete($thread->path())->assertRedirect('/login');
+
+        $this->signIn();
+        $this->delete($thread->path())->assertStatus(403);
+    }
+
+    /** @test */
+    function authorized_users_can_delete_threads()
     {
         $this->signIn();
         $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
+        $reply = factory(Reply::class)->create(['thread_id' => $thread->id]);
         $this->assertCount(1, Thread::all());
+        $this->assertCount(1, Reply::all());
 
-        $response = $this->json('delete', "/threads/{$thread->category->slug}/{$thread->id}/delete");
+        $response = $this->json('delete', $thread->path());
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
         $this->assertCount(0, Thread::all());
+        $this->assertCount(0, Reply::all());
     }
 
     /** @test */
