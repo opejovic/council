@@ -18,10 +18,10 @@ class ThreadController extends Controller
     public function index(Category $category, ThreadFilters $filters)
     {
         $threads = Thread::filter($filters);
-        
+
         if ($category->exists) {
             $threads = Thread::where('category_id', $category->id);
-        } 
+        }
 
         $threads = $threads->latest()->get();
 
@@ -103,11 +103,18 @@ class ThreadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Http\Response
+     * @param  \App\Models\Category $category
+     * @param  \App\Models\Thread   $thread
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Thread $thread)
+    public function destroy(Category $category, Thread $thread)
     {
-        //
+        $thread->delete();
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect('/threads');
     }
 }

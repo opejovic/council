@@ -5,7 +5,17 @@
         <div class="row justify-content-start">
             <div class="col-md-8">
                 <div class="card mb-5">
-                    <div class="card-header">{{ $thread->title }}</div>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>{{ $thread->title }}</h4>
+
+                        <form action="{{ route('thread.delete', [$thread->category, $thread]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
 
                     <div class="card-body">
                         {{ $thread->body }}

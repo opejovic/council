@@ -26,6 +26,7 @@ Route::post('/threads', [ThreadController::class, 'store'])->name('thread.store'
 
 Route::get('/threads/{category}', [ThreadController::class, 'index']);
 Route::get('/threads/{category}/{thread}', [ThreadController::class, 'show'])->name('thread.show');
+Route::delete('/threads/{category}/{thread}/delete', [ThreadController::class, 'destroy'])->name('thread.delete');
 
 Route::post('/threads/{category}/{thread}/replies', [ReplyController::class, 'store'])->middleware('auth');
 

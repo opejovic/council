@@ -10,13 +10,15 @@
             </div>
 
             @foreach ($threads as $thread)
-            <div class="mt-2 border-bottom d-flex justify-content-between align-items-start">
-                <div>
-                    <h4><a href="{{ $thread->path() }}">{{ $thread->title }}</a></h4>
-                    <p>{{ $thread->body }}</p>
+            <div class="mt-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-start">
+                        <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
+                        <span class=" small">{{ $thread->created_at->diffForHumans() }}</span>
+                    </div>
+                    <div class="card-body">{{ $thread->body }}</div>
                 </div>
 
-                <span class=" small">{{ $thread->created_at->diffForHumans() }}</span>
             </div>
             @endforeach
         </div>

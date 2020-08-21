@@ -46,6 +46,20 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
+    function authenticated_users_can_delete_their_threads()
+    {
+        $this->signIn();
+        $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
+        $this->assertCount(1, Thread::all());
+
+        $response = $this->json('delete', "/threads/{$thread->category->slug}/{$thread->id}/delete");
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertCount(0, Thread::all());
+    }
+
+    /** @test */
     public function a_thread_requires_a_title()
     {
         $this->publishThread(['title' => null])->assertSessionHasErrors('title');
