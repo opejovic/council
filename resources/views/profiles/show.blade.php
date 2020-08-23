@@ -9,17 +9,12 @@
                 <p>Member since {{ $profileUser->created_at->diffForHumans() }}</p>
             </div>
 
-            @foreach ($threads as $thread)
-            <div class="mt-4">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-start">
-                        <a href="{{ $thread->path() }}">{{ $thread->title }}</a>
-                        <span class=" small">{{ $thread->created_at->diffForHumans() }}</span>
-                    </div>
-                    <div class="card-body">{{ $thread->body }}</div>
-                </div>
-
-            </div>
+            @foreach ($activities as $date => $group)
+                <h3>{{ $date }}</h3>
+                @foreach($group as $activity)
+                    @include("profiles.activities.{$activity->type}")
+                @endforeach
+                <br>
             @endforeach
         </div>
     </div>

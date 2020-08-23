@@ -9,7 +9,7 @@
                     <div class="card-header d-flex justify-content-between">
                         <div>
                             <h5><a href="{{ $thread->path() }}">{{ $thread->title }}</a></h5>
-                            <a href="">{{ $thread->creatorName }}</a>
+                            <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creatorName }}</a>
                         </div>
                         <div>
                             {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}

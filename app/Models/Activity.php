@@ -10,4 +10,9 @@ class Activity extends Model
      * Attributes that are not mass assignable.
      */
     protected $guarded = [];
+
+    public function subject()
+    {
+        return $this->morphTo();
+    }
 }
