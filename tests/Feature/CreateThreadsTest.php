@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\Activity;
 
 class CreateThreadsTest extends TestCase
 {
@@ -73,6 +74,7 @@ class CreateThreadsTest extends TestCase
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
         $this->assertCount(0, Thread::all());
         $this->assertCount(0, Reply::all());
+        $this->assertEquals(0, Activity::count());
     }
 
     /** @test */
