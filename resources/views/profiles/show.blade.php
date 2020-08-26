@@ -12,7 +12,9 @@
             @foreach ($activities as $date => $group)
                 <h3>{{ $date }}</h3>
                 @foreach($group as $activity)
-                    @include("profiles.activities.{$activity->type}")
+                    @if(view()->exists("profiles.activities.{$activity->type}"))
+                        @include("profiles.activities.{$activity->type}")
+                    @endif
                 @endforeach
                 <br>
             @endforeach

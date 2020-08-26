@@ -32,4 +32,9 @@ class Reply extends Model
         return $this->owner->name;
     }
 
+    public function path()
+    {
+        return "{$this->thread->path()}#reply-{$this->id}";
+    }
+
 }
