@@ -90,6 +90,8 @@
         <main class="py-4">
             @yield('content')
         </main>
+
+        <flash-component message="{{ session('flash') }}" />
     </div>
 </body>
 </html>
