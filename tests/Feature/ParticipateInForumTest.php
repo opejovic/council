@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -39,6 +40,31 @@ class ParticipateInForumTest extends TestCase
 
         $this->assertEquals(1, $thread->fresh()->replies()->count());
         $this->get($thread->path())->assertSee('I have something to say about this thread.');
+    }
+
+    /** @test */
+    function unauthorized_users_cannot_delete_replies()
+    {
+        $reply = factory(Reply::class)->create();
+        $user = factory(User::class)->create();
+
+        $responseForGuest = $this->delete("/replies/{$reply->id}");
+        $responseForUnauthorizedUser = $this->actingAs($user)->delete("/replies/{$reply->id}");
+
+        $responseForGuest->assertRedirect('/login');
+        $responseForUnauthorizedUser->assertStatus(403);
+    }
+
+    /** @test */
+    function authorized_users_can_delete_replies()
+    {
+        $user = factory(User::class)->create();
+        $reply = factory(Reply::class)->create(['user_id' => $user->id]);
+
+        $this->actingAs($user)->delete("/replies/{$reply->id}");
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertEquals(0, Reply::count());
     }
 
     /** @test */

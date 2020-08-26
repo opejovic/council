@@ -88,10 +88,18 @@ class ReplyController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Reply  $reply
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function destroy(Reply $reply)
     {
-        //
+        $this->authorize('update', $reply);
+
+        $reply->delete();
+
+        if (request()->wantsJson()) {
+            return response(200);
+        }
+
+        return back()->with('flash', 'Reply deleted.');
     }
 }

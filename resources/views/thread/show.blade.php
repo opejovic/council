@@ -8,13 +8,15 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h4>{{ $thread->title }}</h4>
 
-                        <form action="{{ route('thread.delete', [$thread->category, $thread]) }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-sm btn-danger" type="submit">
-                                Delete
-                            </button>
-                        </form>
+                        @can('update', $thread)
+                            <form action="{{ route('thread.delete', [$thread->category, $thread]) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger" type="submit">
+                                    Delete
+                                </button>
+                            </form>
+                        @endcan
                     </div>
 
                     <div class="card-body">
