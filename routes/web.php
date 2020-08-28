@@ -29,8 +29,10 @@ Route::get('/threads/{category}/{thread}', [ThreadController::class, 'show'])->n
 Route::delete('/threads/{category}/{thread}', [ThreadController::class, 'destroy'])->name('thread.delete')->middleware('auth');
 
 Route::post('/threads/{category}/{thread}/replies', [ReplyController::class, 'store'])->middleware('auth');
+Route::patch('/replies/{reply}', [ReplyController::class, 'update'])->name('reply.update')->middleware('auth');
 Route::delete('/replies/{reply}', [ReplyController::class, 'destroy'])->name('reply.delete')->middleware('auth');
 
 Route::post('/replies/{reply}/favorites', [FavoriteController::class, 'store'])->middleware('auth')->name('reply.favorite');
+Route::delete('/replies/{reply}/favorites', [FavoriteController::class, 'destroy'])->middleware('auth')->name('reply.favorite');
 
 Route::get('/profiles/{user}', [ProfileController::class, 'show'])->name('profile');

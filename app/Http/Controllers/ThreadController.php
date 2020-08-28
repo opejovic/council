@@ -73,7 +73,7 @@ class ThreadController extends Controller
     {
         return view('thread.show', [
             'thread' => $thread,
-            'replies' => $thread->replies()->paginate(20)
+            'replies' => $thread->replies()->paginate(20)->toJson()
         ]);
     }
 

@@ -38,7 +38,7 @@ class FavoriteController extends Controller
     {
         $reply->favorite();
 
-        return back();
+        return response(['message' => 'Reply favorited.'], 200);
     }
 
     /**
@@ -81,8 +81,10 @@ class FavoriteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Reply $reply)
     {
-        //
+        $reply->unfavorite();
+
+        return response(['message' => 'Reply favorited.'], 200);
     }
 }

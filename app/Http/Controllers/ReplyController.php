@@ -6,6 +6,7 @@ use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReplyController extends Controller
 {
@@ -81,7 +82,14 @@ class ReplyController extends Controller
      */
     public function update(Request $request, Reply $reply)
     {
-        //
+        $this->authorize('update', $reply);
+
+        $reply->update(['body' => $request['body']]);
+
+        return response([
+            'message' => 'Reply updated.',
+            'reply' => $reply->fresh()
+        ], 200);
     }
 
     /**
@@ -96,10 +104,12 @@ class ReplyController extends Controller
 
         $reply->delete();
 
+        $message = 'Reply deleted.';
+
         if (request()->wantsJson()) {
-            return response(200);
+            return response(['message' => $message], 200);
         }
 
-        return back()->with('flash', 'Reply deleted.');
+        return back()->with('flash', $message);
     }
 }

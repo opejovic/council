@@ -68,6 +68,31 @@ class ParticipateInForumTest extends TestCase
     }
 
     /** @test */
+    function unauthorized_users_cannot_update_replies()
+    {
+        $reply = factory(Reply::class)->create();
+        $user = factory(User::class)->create();
+
+        $responseForGuest = $this->patch("/replies/{$reply->id}");
+        $responseForUnauthorizedUser = $this->actingAs($user)->patch("/replies/{$reply->id}");
+
+        $responseForGuest->assertRedirect('/login');
+        $responseForUnauthorizedUser->assertStatus(403);
+    }
+
+    /** @test */
+    function authorized_users_can_update_replies()
+    {
+        $user = factory(User::class)->create();
+        $reply = factory(Reply::class)->create(['user_id' => $user->id]);
+
+        $updatedReply = 'Updated body.';
+        $this->actingAs($user)->patch("/replies/{$reply->id}", ['body' => $updatedReply]);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedReply]);
+    }
+
+    /** @test */
     public function a_reply_requires_a_body()
     {
         $this->signIn();

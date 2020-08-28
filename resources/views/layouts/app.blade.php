@@ -93,5 +93,11 @@
 
         <flash-component message="{{ session('flash') }}" />
     </div>
+
+    @auth
+        <script>
+            window.user = @json(auth()->user())
+        </script>
+    @endauth
 </body>
 </html>
