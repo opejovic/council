@@ -26,7 +26,6 @@
 
                 <div class="pb-4">
                     <replies-component :replies="{{ $replies }}" />
-                    {{-- <reply-component :attributes="{{ $reply }}" /> --}}
                 </div>
 
                 @if(auth()->check())

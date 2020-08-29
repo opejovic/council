@@ -6,6 +6,13 @@ use App\Models\Favorite;
 
 trait Favoritable
 {
+    protected static function bootFavoritable()
+    {
+        static::deleting(function ($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
     public function favorites()
     {
         return $this->morphMany(Favorite::class, 'favorited');
@@ -24,11 +31,12 @@ trait Favoritable
     public function unfavorite()
     {
         $attributes = ['user_id' => auth()->id()];
-        
-        if ($this->favorites()->where($attributes)->exists()) {
-            return $this->favorites()->delete($attributes);
-        }
 
+        $records = $this->favorites()->where($attributes);
+
+        if ($records->exists()) {
+            return $records->get()->each->delete($attributes);
+        }
     }
 
     public function isFavorited()
