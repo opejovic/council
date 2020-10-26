@@ -5,25 +5,35 @@
         <p>{{ attributes.owner.name }} at {{ formattedDate }}</p>
 
         <div class="d-flex">
-          <!--                @auth-->
+          <!-- @auth -->
           <form class="mr-1" @submit.prevent="toggleFavorite" method="POST">
             <button
               class="btn btn-sm"
               :class="isFavorited ? 'btn-primary' : 'btn-secondary'"
-              type="submit">
-                {{ formattedFavoritesCount }}
+              type="submit"
+            >
+              {{ formattedFavoritesCount }}
             </button>
           </form>
-          <!--                @endauth-->
+          <!-- @endauth -->
         </div>
       </div>
 
       <div v-if="editing" class="p-2">
         <form @submit.prevent="updateReply">
-          <textarea class="form-control p-1 mb-2" name id cols="10" rows="5" :value="replyBody"></textarea>
+          <textarea
+            class="form-control p-1 mb-2"
+            name
+            id
+            cols="10"
+            rows="5"
+            :value="replyBody"
+          ></textarea>
 
           <button class="btn btn-sm btn-secondary" type="submit">Save</button>
-          <button class="btn btn-sm btn-secondary" @click="cancelChanges">Cancel</button>
+          <button class="btn btn-sm btn-secondary" @click="cancelChanges">
+            Cancel
+          </button>
         </form>
       </div>
 
@@ -31,7 +41,12 @@
 
       <!--        @can('update', $reply)-->
       <div class="card-footer d-flex">
-        <button class="btn btn-info btn-sm mr-1 form-group" @click="editing = true">Edit</button>
+        <button
+          class="btn btn-info btn-sm mr-1 form-group"
+          @click="editing = true"
+        >
+          Edit
+        </button>
 
         <form @submit.prevent="deleteReply" method="POST">
           <button class="btn btn-danger btn-sm" type="submit">Delete</button>
@@ -43,7 +58,7 @@
 </template>
 
 <script>
-import moment from 'moment';
+import moment from "moment";
 
 export default {
   name: "ReplyComponent",
@@ -86,8 +101,7 @@ export default {
     },
 
     formattedFavoritesCount() {
-      // {{ attributes.favorites_count }} {{ Str::plural('Favorite', $reply->favorites_count) }}
-      return this.favoritesCount + ' favs';
+      return this.favoritesCount + " favs";
     },
   },
 
@@ -123,7 +137,7 @@ export default {
     },
 
     notifyParent() {
-      this.$emit('deleted', this.attributes.id);
+      this.$emit("deleted", this.attributes.id);
     },
 
     updateReply(e) {
@@ -155,6 +169,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-</style>

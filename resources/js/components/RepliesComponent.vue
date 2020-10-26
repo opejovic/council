@@ -13,11 +13,18 @@
 </template>
 
 <script>
+    import ReplyComponent from "./ReplyComponent";
+
     export default {
         name: 'RepliesComponent',
 
+        components: {
+            ReplyComponent,
+        },
+
         props: {
             replies: {
+                type: Object,
                 default: null
             },
         },
